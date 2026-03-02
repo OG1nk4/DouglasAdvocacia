@@ -481,31 +481,62 @@ img {
   align-items: center;
 }
 
-.sobre__image-frame {
-  position: relative;
-  background: var(--color-bg-light);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+.sobre__grid--v3 {
+  grid-template-columns: 1.4fr 1fr;
+  gap: 50px;
+  align-items: start;
 }
 
-.sobre__photo {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  object-position: top center;
-  aspect-ratio: 3/4;
+/* --- Value Cards (replaces photo space) --- */
+.sobre__values {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.sobre__image-accent {
-  position: absolute;
-  bottom: -20px;
-  right: -20px;
-  width: 200px;
-  height: 200px;
-  border: 3px solid var(--color-gold);
-  border-radius: var(--radius-lg);
-  opacity: 0.3;
+.sobre__value-card {
+  background: var(--color-white);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: all var(--transition-base);
+}
+
+.sobre__value-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-color: rgba(201, 168, 76, 0.3);
+}
+
+.sobre__value-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--color-gold), #b8933c);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.sobre__value-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #1a1a1a;
+}
+
+.sobre__value-card h4 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  margin-bottom: 6px;
+}
+
+.sobre__value-card p {
+  font-size: 0.85rem;
+  color: var(--color-text-dark-muted);
+  line-height: 1.5;
 }
 
 .sobre__name {
@@ -612,9 +643,15 @@ img {
   position: relative;
   z-index: 2;
   filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.6));
-  /* Soft fade at bottom to blend into dark section */
-  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 98%);
-  mask-image: linear-gradient(to bottom, black 65%, transparent 98%);
+  /* Strong mask to hide baked-in checkerboard edges */
+  -webkit-mask-image:
+    radial-gradient(ellipse 70% 80% at 50% 45%, black 50%, transparent 95%),
+    linear-gradient(to bottom, transparent 0%, black 8%, black 65%, transparent 95%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(ellipse 70% 80% at 50% 45%, black 50%, transparent 95%),
+    linear-gradient(to bottom, transparent 0%, black 8%, black 65%, transparent 95%);
+  mask-composite: intersect;
 }
 
 .areas__photo-glow {
@@ -954,6 +991,168 @@ img {
 
 .contato__map iframe {
   display: block;
+}
+
+
+/* ================================================
+   BLOG
+   ================================================ */
+.blog {
+  padding: var(--section-padding);
+  background: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+
+.blog .section-tag {
+  border-color: rgba(201, 168, 76, 0.3);
+}
+
+.blog .section-desc {
+  color: var(--color-text-dark-muted);
+}
+
+.blog__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.blog-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: all var(--transition-base);
+}
+
+.blog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Card Header with Gradient --- */
+.blog-card__header {
+  position: relative;
+  padding: 28px 24px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.blog-card__header--digital {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.blog-card__header--familia {
+  background: linear-gradient(135deg, #2d1b1b 0%, #3d2020 50%, #5a2d2d 100%);
+}
+
+.blog-card__header--consumidor {
+  background: linear-gradient(135deg, #1a2e1e 0%, #1e3d28 50%, #0f6034 100%);
+}
+
+.blog-card__header--trabalhista {
+  background: linear-gradient(135deg, #2e2210 0%, #3d2d12 50%, #604a0f 100%);
+}
+
+.blog-card__header--tributario {
+  background: linear-gradient(135deg, #1f1a2e 0%, #2a1e3d 50%, #3d0f60 100%);
+}
+
+.blog-card__header--agro {
+  background: linear-gradient(135deg, #1a2e1a 0%, #2d3d1e 50%, #3d5a0f 100%);
+}
+
+.blog-card__icon-bg {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  width: 80px;
+  height: 80px;
+  opacity: 0.08;
+}
+
+.blog-card__icon-bg svg {
+  width: 100%;
+  height: 100%;
+  stroke: white;
+}
+
+.blog-card__category {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.blog-card__reading {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: auto;
+  padding-top: 4px;
+}
+
+/* --- Card Content --- */
+.blog-card__content {
+  padding: 24px;
+}
+
+.blog-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.blog-card__excerpt {
+  font-size: 0.88rem;
+  color: var(--color-text-dark-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* --- Card Footer with Author --- */
+.blog-card__footer {
+  display: flex;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.blog-card__author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.blog-card__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-gold), #b8933c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.5px;
+}
+
+.blog-card__author span {
+  font-size: 0.8rem;
+  color: var(--color-text-dark-muted);
+  font-weight: 500;
 }
 
 
