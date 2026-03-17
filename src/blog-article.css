@@ -4,8 +4,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&display=swap');
 
 :root {
-    --color-bg-dark: #0d0d0f;
-    --color-bg-dark-2: #131316;
+    --color-bg-dark: #050814;
+    --color-bg-dark-2: #0b1020;
     --color-bg-light: #f7f5f0;
     --color-white: #ffffff;
     --color-gold: #c9a84c;
@@ -70,6 +70,18 @@ a:hover {
     padding: 0 24px;
     position: relative;
     z-index: 1;
+}
+
+.article-header__brand {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.article-header__brand img {
+    width: 200px;
+    height: auto;
+    display: block;
 }
 
 .article-header__back {
@@ -174,6 +186,18 @@ a:hover {
     max-width: 720px;
     margin: 0 auto;
     padding: 60px 24px 80px;
+}
+
+/* Reveal (JS adds .reveal to content blocks) */
+.reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .article-body h2 {
@@ -308,16 +332,11 @@ a:hover {
     padding: 0 24px;
 }
 
-.article-footer__logo {
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--color-text-light);
-    margin-bottom: 8px;
-}
-
-.article-footer__logo span {
-    color: var(--color-gold);
+.article-footer__logo img {
+    width: 220px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
 }
 
 .article-footer p {
@@ -353,5 +372,19 @@ a:hover {
 
     .article-cta {
         padding: 28px 20px;
+    }
+
+    .article-header__brand img {
+        width: 180px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        scroll-behavior: auto !important;
+    }
+    .reveal,
+    .reading-progress {
+        transition: none !important;
     }
 }

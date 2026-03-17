@@ -22,12 +22,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800;900&family=Montserrat:wght@500;600;700;800;900&display=swap"
     rel="stylesheet" />
 
   <!-- EmailJS SDK -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+  <link rel="icon" type="image/png" href="/images/logo-flat.png" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 
@@ -36,10 +37,8 @@
   <!-- ========== HEADER ========== -->
   <header class="header" id="header">
     <div class="container header__inner">
-      <a href="#inicio" class="header__logo" aria-label="Douglas Ferraz Advocacia - Página Inicial">
-        <span class="logo-text">D<span class="logo-accent">F</span></span>
-        <span class="logo-divider"></span>
-        <span class="logo-subtext">Advocacia<br><small>& Consultoria Jurídica</small></span>
+      <a href="#inicio" class="header__logo brand" aria-label="Douglas Ferraz Advocacia - Página Inicial">
+        <img src="/images/logo-3d-gold.png" alt="Douglas Ferraz Advocacia & Consultoria Jurídica" class="brand__logo" />
       </a>
 
       <nav class="header__nav" id="nav" aria-label="Navegação principal">
@@ -68,6 +67,9 @@
     <section class="hero" id="inicio">
       <div class="hero__bg-pattern" aria-hidden="true"></div>
       <div class="hero__bg-accent" aria-hidden="true"></div>
+      <div class="hero__brand-3d" aria-hidden="true">
+        <img src="/images/logo-3d-hero.png" alt="" loading="eager" decoding="async" />
+      </div>
       <div class="container hero__content">
         <div class="hero__badge animate-on-scroll">
           <span class="badge__icon">⚖️</span>
@@ -112,6 +114,10 @@
         <div class="sobre__grid sobre__grid--v3">
           <div class="sobre__content animate-on-scroll">
             <h3 class="sobre__name">Dr. Douglas de Souza Ferraz</h3>
+            <div class="sobre__highlights">
+              <span class="pill pill--gold">Advocacia Especializada</span>
+              <span class="pill pill--outline">Atendimento estratégico e humanizado</span>
+            </div>
             <p class="sobre__oab">OAB/SP 426.587</p>
             <p class="sobre__text">
               O escritório <strong>Douglas Ferraz Advocacia e Consultoria Jurídica</strong> nasceu da
@@ -480,6 +486,48 @@
       </div>
     </section>
 
+    <!-- ========== CONFIANÇA & CONVERSÃO ========== -->
+    <section class="trust" id="confianca" aria-label="Credibilidade e diferenciais">
+      <div class="container">
+        <div class="trust__grid">
+          <div class="trust__content animate-on-scroll">
+            <span class="section-tag">Confiança & Transparência</span>
+            <h2 class="trust__title">Uma advocacia moderna, com <span class="text-gold">padrão premium</span></h2>
+            <p class="trust__desc">
+              Comunicação clara, estratégia sob medida e foco em resultado. Aqui, você tem acompanhamento direto e
+              orientação jurídica com linguagem acessível.
+            </p>
+            <div class="trust__cta">
+              <a href="https://wa.me/5511976489990?text=Olá, gostaria de agendar uma consultoria jurídica."
+                class="btn btn--primary btn--lg" target="_blank" rel="noopener">
+                Agendar Consultoria
+              </a>
+              <a href="#contato" class="btn btn--outline btn--lg">
+                Enviar mensagem
+              </a>
+            </div>
+          </div>
+          <div class="trust__cards animate-on-scroll">
+            <div class="trust-card">
+              <div class="trust-card__kicker">Credenciais</div>
+              <div class="trust-card__title">OAB/SP 426.587</div>
+              <p class="trust-card__text">Atuação técnica, sigilo e postura estratégica do início ao fim.</p>
+            </div>
+            <div class="trust-card">
+              <div class="trust-card__kicker">Depoimentos</div>
+              <div class="trust-card__title">Clientes satisfeitos</div>
+              <p class="trust-card__text">Espaço reservado para feedbacks reais (Google/Instagram), reforçando confiança.</p>
+            </div>
+            <div class="trust-card">
+              <div class="trust-card__kicker">Atendimento</div>
+              <div class="trust-card__title">Resposta em até 24h</div>
+              <p class="trust-card__text">Agilidade com clareza, para você decidir com segurança.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ========== CONTATO ========== -->
     <section class="contato" id="contato">
       <div class="container">
@@ -547,7 +595,7 @@
                 </svg>
                 <div>
                   <span class="info-label">Endereço</span>
-                  <span>R. Araguacema, 89 - Jardim Paulista, Guarulhos - SP, 07083-110</span>
+                  <span>R. Araguacema, 89 - Jardim Paulista, Sala 01, Guarulhos - SP, 07083-110</span>
                 </div>
               </div>
               <div class="contato__info-item">
@@ -581,9 +629,9 @@
     <div class="container">
       <div class="footer__grid">
         <div class="footer__brand">
-          <a href="#inicio" class="footer__logo-link">
-            <span class="logo-text logo-text--footer">D<span class="logo-accent">F</span></span>
-            <span class="logo-subtext logo-subtext--footer">Advocacia & Consultoria Jurídica</span>
+          <a href="#inicio" class="footer__logo-link brand" aria-label="Douglas Ferraz Advocacia - Página Inicial">
+            <img src="/images/logo-3d-gold.png" alt="Douglas Ferraz Advocacia & Consultoria Jurídica"
+              class="brand__logo brand__logo--footer" loading="lazy" decoding="async" />
           </a>
           <p class="footer__desc">
             Douglas Ferraz Advocacia e Consultoria Jurídica. Escritório com atuação estratégica e personalizada para
@@ -616,7 +664,7 @@
           <h4 class="footer__heading">Contato</h4>
           <p><a href="https://wa.me/5511976489990" target="_blank" rel="noopener">(11) 97648-9990</a></p>
           <p><a href="mailto:douglassferraz@adv.oabsp.org.br">douglassferraz@adv.oabsp.org.br</a></p>
-          <p>R. Araguacema, 89 - Jardim Paulista<br>Guarulhos - SP, 07083-110</p>
+          <p>R. Araguacema, 89 - Jardim Paulista, Sala 01<br>Guarulhos - SP, 07083-110</p>
           <div class="footer__social">
             <a href="https://instagram.com/ferraz.advocacia.adv" target="_blank" rel="noopener" aria-label="Instagram">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

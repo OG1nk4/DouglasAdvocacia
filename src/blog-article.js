@@ -14,6 +14,13 @@ function initReadingProgress() {
 
 // Smooth reveal on scroll
 function initScrollReveal() {
+    const body = document.querySelector('.article-body');
+    if (body) {
+        body.querySelectorAll('p, h2, h3, ul, ol, blockquote, .law-ref, .article-cta').forEach((el) => {
+            el.classList.add('reveal');
+        });
+    }
+
     const els = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
