@@ -150,102 +150,120 @@ function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  // Phone mask
+  // ─── Recipient is read from data-recipient attribute on the form.
+  // To change the destination email, just update index.html:
+  //   data-recipient="newemail@example.com"
+  // No JS changes needed.
+  const recipientEmail = form.dataset.recipient || 'ginkasanches@gmail.com';
+  const emailSubject   = form.dataset.subject   || 'Novo contato pelo site - Douglas Ferraz Advocacia';
+
+  // ─── Phone mask
   const phoneInput = document.getElementById('phone');
   if (phoneInput) {
     phoneInput.addEventListener('input', (e) => {
-      let value = e.target.value.replace(/\D/g, '');
-      if (value.length > 11) value = value.slice(0, 11);
-
-      if (value.length > 6) {
-        value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
-      } else if (value.length > 2) {
-        value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
-      } else if (value.length > 0) {
-        value = `(${value}`;
-      }
-
-      e.target.value = value;
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 6)      v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+      else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      else if (v.length > 0) v = `(${v}`;
+      e.target.value = v;
     });
   }
 
+  // ─── Helpers
+  function setFieldError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('is-error');
+    let err = el.parentElement.querySelector('.field-error');
+    if (!err) {
+      err = document.createElement('span');
+      err.className = 'field-error';
+      el.parentElement.appendChild(err);
+    }
+    err.textContent = msg;
+  }
+
+  function clearErrors() {
+    form.querySelectorAll('.is-error').forEach(el => el.classList.remove('is-error'));
+    form.querySelectorAll('.field-error').forEach(el => el.remove());
+  }
+
+  function showMsg(type) {
+    document.getElementById('form-success')?.classList.toggle('show', type === 'success');
+    document.getElementById('form-error')?.classList.toggle('show', type === 'error');
+  }
+
+  function setLoading(loading) {
+    const btn    = document.getElementById('contact-submit');
+    const text   = btn?.querySelector('.btn__text');
+    const loader = btn?.querySelector('.btn__loader');
+    if (!btn) return;
+    btn.disabled             = loading;
+    text.style.display       = loading ? 'none'   : 'inline';
+    loader.style.display     = loading ? 'inline-flex' : 'none';
+  }
+
+  // ─── Submit handler
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    clearErrors();
+    showMsg(null);
 
-    const submitBtn = document.getElementById('contact-submit');
-    const btnText = submitBtn.querySelector('.btn__text');
-    const btnLoader = submitBtn.querySelector('.btn__loader');
-
-    // Get form data
-    const formData = {
-      name: document.getElementById('name').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      message: document.getElementById('message').value.trim(),
+    const data = {
+      name:    document.getElementById('name')?.value.trim()    || '',
+      email:   document.getElementById('email')?.value.trim()   || '',
+      phone:   document.getElementById('phone')?.value.trim()   || '',
+      message: document.getElementById('message')?.value.trim() || '',
     };
 
-    // Validate
-    if (!formData.name || !formData.email || !formData.phone || !formData.message) {
-      return;
-    }
+    // ─── Validation
+    let hasError = false;
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data.name)              { setFieldError('name',    'Por favor, informe seu nome.');      hasError = true; }
+    if (!emailRe.test(data.email)){ setFieldError('email',  'Informe um e-mail válido.');         hasError = true; }
+    if (data.phone.length < 10)  { setFieldError('phone',   'Informe um telefone com DDD.');      hasError = true; }
+    if (!data.message)           { setFieldError('message', 'Por favor, escreva uma mensagem.'); hasError = true; }
+    if (hasError) return;
 
-    // Show loading state
-    submitBtn.disabled = true;
-    btnText.style.display = 'none';
-    btnLoader.style.display = 'inline';
+    setLoading(true);
 
     try {
-      if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY') {
-        // ---- REAL EmailJS integration ----
+      const ejsReady = typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY';
 
-        // 1. Send notification to the lawyer
+      if (ejsReady) {
+        // ── Live mode: send via EmailJS ──────────────────────
         await emailjs.send(
           EMAILJS_CONFIG.serviceId,
           EMAILJS_CONFIG.templateNotify,
           {
-            from_name: formData.name,
-            from_email: formData.email,
-            phone: formData.phone,
-            message: formData.message,
-            to_email: 'douglassferraz@adv.oabsp.org.br',
-          }
-        );
-
-        // 2. Send auto-reply to the client
-        await emailjs.send(
-          EMAILJS_CONFIG.serviceId,
-          EMAILJS_CONFIG.templateAutoReply,
-          {
-            to_name: formData.name,
-            to_email: formData.email,
-            reply_message:
-              'Recebemos seu contato e retornaremos em breve. Obrigado por confiar na Douglas Ferraz Advocacia e Consultoria Jurídica.',
+            from_name:  data.name,
+            from_email: data.email,
+            phone:      data.phone,
+            message:    data.message,
+            to_email:   recipientEmail,
+            subject:    emailSubject,
           }
         );
       } else {
-        // ---- Demo mode (no EmailJS configured) ----
-        // Simulate a network request
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        console.log('📧 [DEMO] Dados do formulário:', formData);
-        console.log('📧 [DEMO] Configure o EmailJS para enviar e-mails reais.');
-        console.log('📧 [DEMO] Edite as constantes EMAILJS_CONFIG no main.js');
+        // ── Demo / test mode (EmailJS not yet configured) ────
+        await new Promise(r => setTimeout(r, 1400));
+        console.group('📧 Formulário de contato [DEMO]');
+        console.info('Destinatário:', recipientEmail);
+        console.info('Assunto:',      emailSubject);
+        console.table(data);
+        console.info('Configure EMAILJS_CONFIG em main.js para envios reais.');
+        console.groupEnd();
       }
 
-      // Show success toast
-      showToast();
-
-      // Reset form
+      showMsg('success');
       form.reset();
-    } catch (error) {
-      console.error('Erro ao enviar e-mail:', error);
-      alert(
-        'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente ou entre em contato pelo WhatsApp.'
-      );
+    } catch (err) {
+      console.error('Erro ao enviar formulário:', err);
+      const errText = document.getElementById('form-error-text');
+      if (errText) errText.textContent = 'Ocorreu um erro ao enviar. Tente novamente ou fale pelo WhatsApp.';
+      showMsg('error');
     } finally {
-      // Reset button
-      submitBtn.disabled = false;
-      btnText.style.display = 'inline';
-      btnLoader.style.display = 'none';
+      setLoading(false);
     }
   });
 }
@@ -283,6 +301,64 @@ function initSmoothScroll() {
 }
 
 // ============================================
+// 9. CASOS DE ATUAÇÃO – EXPAND / COLLAPSE
+// ============================================
+function initCasosToggle() {
+  document.querySelectorAll('.caso-card__toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.caso-card');
+      const details = card.querySelector('.caso-card__details');
+      const isOpen = !details.hidden;
+
+      details.hidden = isOpen;
+      btn.setAttribute('aria-expanded', !isOpen);
+    });
+  });
+}
+
+// ============================================
+// 10. BLOG TOGGLE
+// ============================================
+function initBlogToggle() {
+  const btn = document.getElementById('btn-ver-todos');
+  if (!btn) return;
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const hiddenCards = document.querySelectorAll('.blog-card--hidden');
+    hiddenCards.forEach(card => {
+      card.classList.remove('blog-card--hidden');
+      void card.offsetWidth; // trigger reflow
+      card.classList.add('visible');
+    });
+    btn.parentElement.style.display = 'none';
+  });
+}
+
+// ============================================
+// 11. DIRECTIONAL ANIMATIONS (advogado section)
+// ============================================
+function initDirectionalAnimations() {
+  const elements = document.querySelectorAll(
+    '.animate-from-left, .animate-from-right, .animate-fade-up'
+  );
+  if (!elements.length) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+  );
+
+  elements.forEach((el) => observer.observe(el));
+}
+
+// ============================================
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -293,4 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initContactForm();
   initSmoothScroll();
+  initCasosToggle();
+  initBlogToggle();
+  initDirectionalAnimations();
 });
+
