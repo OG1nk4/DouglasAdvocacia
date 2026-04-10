@@ -1,5 +1,5 @@
 /* ================================================
-   DOUGLAS FERRAZ ADVOCACIA - MAIN JS
+   DOUGLAS DE SOUZA FERRAZ - ADVOGADO - MAIN JS
    ================================================ */
 
 import './style.css';
@@ -155,7 +155,7 @@ function initContactForm() {
   //   data-recipient="newemail@example.com"
   // No JS changes needed.
   const recipientEmail = form.dataset.recipient || 'ginkasanches@gmail.com';
-  const emailSubject   = form.dataset.subject   || 'Novo contato pelo site - Douglas Ferraz Advocacia';
+  const emailSubject   = form.dataset.subject   || 'Novo contato pelo site - Douglas de Souza Ferraz - Advogado';
 
   // ─── Phone mask
   const phoneInput = document.getElementById('phone');
@@ -372,5 +372,47 @@ document.addEventListener('DOMContentLoaded', () => {
   initCasosToggle();
   initBlogToggle();
   initDirectionalAnimations();
+  initProcessMetrics();
 });
+
+// ============================================
+// 12. PROCESS METRICS COUNTER
+// ============================================
+function initProcessMetrics() {
+  const counters = [
+    { id: 'hero-total-processos', target: 356 },
+    { id: 'stats-total', target: 357 }
+  ];
+
+  const animateCounter = (id, target) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    let current = 0;
+    const duration = 2000; // 2 seconds
+    const step = target / (duration / 16);
+
+    const update = () => {
+      current += step;
+      if (current < target) {
+        el.textContent = Math.floor(current);
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = target;
+      }
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        update();
+        observer.unobserve(el);
+      }
+    }, { threshold: 0.1 });
+
+    observer.observe(el);
+  };
+
+  counters.forEach(c => animateCounter(c.id, c.target));
+}
+
 
