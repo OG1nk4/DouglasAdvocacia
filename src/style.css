@@ -242,6 +242,10 @@ img {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
 
+.header.scrolled .brand__logo {
+  width: 175px;
+}
+
 .header__inner {
   display: flex;
   align-items: center;
@@ -256,10 +260,17 @@ img {
 }
 
 .brand__logo {
-  width: 170px;
+  width: 205px;
   height: auto;
   display: block;
   transform: translateZ(0);
+  transition: all var(--transition-base);
+  filter: drop-shadow(0 0 10px rgba(201, 168, 76, 0.2));
+}
+
+.brand__logo:hover {
+  transform: scale(1.04) translateZ(0);
+  filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.4)) brightness(1.15);
 }
 
 .brand__logo--footer {
@@ -402,11 +413,18 @@ img {
 .hero__brand-3d img {
   width: min(1100px, 110vw);
   max-width: none;
-  opacity: 0.18;
+  opacity: 0.22;
   filter: blur(0.4px) saturate(1.15) contrast(1.05);
   transform: translateY(10px) scale(1.03);
   -webkit-mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 72%);
   mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 72%);
+  animation: floatBrand 15s ease-in-out infinite alternate;
+}
+
+@keyframes floatBrand {
+  0% { transform: translateY(10px) scale(1.03) rotate(0deg); }
+  50% { transform: translateY(-10px) scale(1.05) rotate(1deg); }
+  100% { transform: translateY(10px) scale(1.03) rotate(0deg); }
 }
 
 .hero__badge {
@@ -1663,7 +1681,7 @@ img {
   }
 
   .brand__logo {
-    width: 150px;
+    width: 165px;
   }
 
   .brand__logo--footer {
